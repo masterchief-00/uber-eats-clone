@@ -8,13 +8,14 @@ import RestaurantItems, {
 } from "../components/home/RestaurantItems";
 import { Divider } from "react-native-elements";
 import BottomTabs from "../components/home/BottomTabs";
+import { StatusBar } from "expo-status-bar";
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [restaurantData, setRestaurantData] = useState(localRestaurants);
   const [activeTab, setActiveTab] = useState("Delivery");
-  const [city, setCity] = useState("California");
+  const [city, setCity] = useState("San Diego");
 
-  const YELP_API_KEY = process.env.YELP_API_KEY
+  const YELP_API_KEY = process.env.YELP_API_KEY;
 
   const getRestaurantsFromYelp = () => {
     const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurant&location=${city}`;
@@ -32,7 +33,8 @@ export default function Home() {
             business.transactions.includes(activeTab.toLowerCase())
           )
         )
-      ).catch(err=>console.log(err));
+      )
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -46,10 +48,14 @@ export default function Home() {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Categories />
-        <RestaurantItems restaurantData={restaurantData} />
+        <RestaurantItems
+          restaurantData={restaurantData}
+          navigation={navigation}
+        />
       </ScrollView>
       <Divider width={1} />
       <BottomTabs />
+      <StatusBar backgroundColor="transparent" style="dark" />
     </SafeAreaView>
   );
 }

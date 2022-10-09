@@ -1,6 +1,13 @@
-import Home from "./screens/Home";
-import RestaurantDetail from "./screens/RestaurantDetail";
+import Navigation from "./Navigation";
+import { Provider } from "react-redux";
+import configureStore from "./redux/store";
+
+const store = configureStore();
 
 export default function App() {
-  return <RestaurantDetail />;
+  return (
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
+  );
 }

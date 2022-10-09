@@ -32,19 +32,34 @@ export const localRestaurants = [
   },
 ];
 
-export default function RestaurantItems(props) {
+export default function RestaurantItems({ navigation, ...props }) {
   return (
-    <TouchableOpacity activeOpacity={0.8} style={{ marginBottom: 10 }}>
+    <>
       {props.restaurantData.map((restaurant, index) => (
-        <View
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={{ marginBottom: 10 }}
           key={index}
-          style={{ marginTop: 10, padding: 15, backgroundColor: "white" }}
+          onPress={() =>
+            navigation.navigate("Restaurant Details", {
+              name: restaurant.name,
+              image: restaurant.image_url,
+              price: restaurant.price,
+              reviews: restaurant.review_count,
+              categories: restaurant.categories,
+              rating: restaurant.rating,
+            })
+          }
         >
-          <RestaurantImage image={restaurant.image_url} />
-          <RestaurantInfo name={restaurant.name} rating={restaurant.rating} />
-        </View>
+          <View
+            style={{ marginTop: 10, padding: 15, backgroundColor: "white" }}
+          >
+            <RestaurantImage image={restaurant.image_url} />
+            <RestaurantInfo name={restaurant.name} rating={restaurant.rating} />
+          </View>
+        </TouchableOpacity>
       ))}
-    </TouchableOpacity>
+    </>
   );
 }
 
@@ -52,7 +67,7 @@ const RestaurantImage = (props) => (
   <>
     <Image
       source={{
-        uri:props.image
+        uri: props.image,
       }}
       style={{ width: "100%", height: 180 }}
     />
@@ -73,9 +88,7 @@ const RestaurantInfo = (props) => (
     }}
   >
     <View>
-      <Text style={{ fontSize: 18, fontWeight: "900" }}>
-        {props.name}
-      </Text>
+      <Text style={{ fontSize: 18, fontWeight: "900" }}>{props.name}</Text>
       <Text style={{ fontSize: 13, color: "gray" }}>30-45 min</Text>
     </View>
     <View
