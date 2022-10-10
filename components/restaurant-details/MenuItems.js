@@ -45,12 +45,16 @@ const foods = [
   },
 ];
 
-export default function MenuItems() {
+export default function MenuItems({ restaurantName }) {
   const dispatch = useDispatch();
-  const selectItem = (item) => {
+  const selectItem = (item, checkBoxValue) => {
     dispatch({
       type: "ADD_TO_CART",
-      payload: item,
+      payload: {
+        ...item,
+        restaurantName: restaurantName,
+        checkBoxValue: checkBoxValue,
+      },
     });
   };
 
@@ -65,7 +69,7 @@ export default function MenuItems() {
                 borderColor: "lightgrey",
                 marginRight: 10,
               }}
-              onPress={()=>selectItem(food)}
+              onPress={(checkBoxValue) => selectItem(food, checkBoxValue)}
             />
             <FoodInfo foods={food} />
             <FoodImage foods={food} />
