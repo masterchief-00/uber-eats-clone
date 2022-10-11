@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { Divider } from "react-native-elements";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import React from "react";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
@@ -47,6 +47,12 @@ const foods = [
 
 export default function MenuItems({ restaurantName }) {
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.selectedItems.items);
+
+  const isFoodInCart = (food, cartItems) => (
+    Boolean(cartItems.find((item) => item.title === food.title))
+  );
+
   const selectItem = (item, checkBoxValue) => {
     dispatch({
       type: "ADD_TO_CART",
@@ -70,6 +76,7 @@ export default function MenuItems({ restaurantName }) {
                 marginRight: 10,
               }}
               onPress={(checkBoxValue) => selectItem(food, checkBoxValue)}
+              isChecked={isFoodInCart(food, cartItems)} 
             />
             <FoodInfo foods={food} />
             <FoodImage foods={food} />
@@ -100,19 +107,19 @@ const styles = StyleSheet.create({
 const FoodInfo = (props) => (
   <View
     style={{
-      width: 220,
+      width: 200,
       justifyContent: "space-evenly",
     }}
   >
     <Text style={styles.titleText}>{props.foods.title}</Text>
-    <Text>{props.foods.description}</Text>
-    <Text>{props.foods.price}</Text>
+    <Text style={{ fontSize: 15 }}>{props.foods.description}</Text>
+    <Text style={{ fontSize: 15 }}>{props.foods.price}</Text>
   </View>
 );
 
 const FoodImage = (props) => (
   <Image
     source={{ uri: props.foods.image }}
-    style={{ width: 100, height: 100, borderRadius: 8 }}
+    style={{ width: 90, height: 90, borderRadius: 8 }}
   />
 );
