@@ -2,7 +2,19 @@ import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import OrderItem from "./OrderItem";
-import firebase from "../../Firebase";
+
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, onValue, set,serverTimestamp } from 'firebase/database';
+
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  databaseURL:'https://react-native-uber-eats-7da19-default-rtdb.firebaseio.com/',
+  authDomain: "react-native-uber-eats-7da19.firebaseapp.com",
+  projectId: "react-native-uber-eats-7da19",
+  storageBucket: "react-native-uber-eats-7da19.appspot.com",
+  messagingSenderId: "964459915208",
+  appId: "1:964459915208:web:b71e8f14636893a40fc2fd",
+};
 
 export default function ViewCart(props) {
   const { items, restaurantName } = useSelector(
@@ -18,13 +30,19 @@ export default function ViewCart(props) {
     currency: "USD",
   });
 
+  let myApp = initializeApp(firebaseConfig);
+
+
   const addOrderToFirebase = () => {
-    const db = firebase.firestore();
-    db.collection("orders").add({
+    
+    const db = getDatabase();
+    let r = (Math.random() + 1).toString(36).substring(7);
+    const reference = ref(db, "orders/"+r);
+    set(reference, {
       items: items,
-      restaurantName: restaurantName,
-      created_at: firebase.firestore.fieldValue.serverTimeStamp(),
+      created_at: serverTimestamp(),
     });
+ 
     setModalVisibility(false);
   };
   return (
