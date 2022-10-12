@@ -49,16 +49,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 40,
     alignSelf: "center",
-  },
-  //   button: {
-  //     backgroundColor: "black",
-  //     paddingVertical: 6,
-  //     paddingHorizontal: 16,
-  //     borderRadius: 30,
-  //   },
-  //   buttonText: {
-  //     color: "white",
-  //     fontSize: 15,
-  //     fontWeight: "900",
-  //   },
+  },  
 });

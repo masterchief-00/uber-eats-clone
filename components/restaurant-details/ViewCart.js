@@ -4,7 +4,13 @@ import { useSelector } from "react-redux";
 import OrderItem from "./OrderItem";
 
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue, set,serverTimestamp } from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  serverTimestamp,
+} from "firebase/database";
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -16,7 +22,7 @@ const firebaseConfig = {
   appId: "1:964459915208:web:b71e8f14636893a40fc2fd",
 };
 
-export default function ViewCart(props) {
+export default function ViewCart({ navigation }) {
   const { items, restaurantName } = useSelector(
     (state) => state.cart.selectedItems
   );
@@ -32,18 +38,17 @@ export default function ViewCart(props) {
 
   let myApp = initializeApp(firebaseConfig);
 
-
   const addOrderToFirebase = () => {
-    
     const db = getDatabase();
     let r = (Math.random() + 1).toString(36).substring(7);
-    const reference = ref(db, "orders/"+r);
+    const reference = ref(db, "orders/" + r);
     set(reference, {
       items: items,
       created_at: serverTimestamp(),
     });
- 
+
     setModalVisibility(false);
+    navigation.navigate("Order completed");
   };
   return (
     <>
