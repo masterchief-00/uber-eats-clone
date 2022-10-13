@@ -2,13 +2,15 @@ import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { Divider } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+
 
 
 export default function MenuItems({ restaurantName,hideCheckBox,foods }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.selectedItems.items);
+  const [orderedFoods,setOrderedFoods]=useState({})
 
   const isFoodInCart = (food, cartItems) => (
     Boolean(cartItems.find((item) => item.title === food.title))
@@ -24,6 +26,12 @@ export default function MenuItems({ restaurantName,hideCheckBox,foods }) {
       },
     });
   };
+
+  useEffect(()=>{
+    // setOrderedFoods(foods)
+    console.log(foods)
+  },[])
+
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

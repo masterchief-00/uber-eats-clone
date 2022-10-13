@@ -10,6 +10,7 @@ import {
   set,
   serverTimestamp,
 } from "firebase/database";
+import MenuItems from "../components/restaurant-details/MenuItems";
 
 export default function OrderCompleted() {
   const [lastOrder, setLastOrder] = useState({
@@ -34,8 +35,12 @@ export default function OrderCompleted() {
     style: "currency",
     currency: "USD",
   });
+
+  /*-----------------------------DOESN'T WORK-------------------------------- */
+
   let allOrders = [];
   let orders = [];
+  let foods = [];
   useEffect(() => {
     const db = getDatabase();
     const reference = ref(db, "orders/");
@@ -45,15 +50,15 @@ export default function OrderCompleted() {
     orders = Object.values(allOrders);
     orders.sort((a, b) => parseFloat(a.created_at) - parseFloat(b.created_at));
 
-    for (const order of orders) {
-      setLastOrder(order.items);
-      break;
-    }
-    // for (const order of orders) {
-    //     console.log(order.items)
-    // }
-    console.log(lastOrder.title)
-  }, []);
+    let ordersObject = Object.assign({}, orders);
+    let itemsObject = Object.assign({}, ordersObject[0].items);
+    setLastOrder(itemsObject[0]);
+
+    foods.push(lastOrder);
+  }, [lastOrder.description]);
+
+  /*-----------------------------DOESN'T WORK-------------------------------- */
+
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
       <View style={{ paddingTop: 40, padding: 20 }}>
@@ -74,6 +79,7 @@ export default function OrderCompleted() {
           speed={0.8}
           loop={true}
         />
+
         <StatusBar backgroundColor="transparent" style="dark" />
       </View>
     </View>
